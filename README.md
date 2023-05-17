@@ -1,5 +1,5 @@
-# Instagram
-This is a Instagram backend project for `User` to signup, signin, and update details with `Authentication`. User can create `Post`, and also can view them.
+# Mapping Practice
+This is a `Spring Boot` project for creating, reading, updating, and deleting `Student`, `Address`, `Book`, `Laptop`, and `Course`.
 
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot "Spring Boot") ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white "Java") ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white "Postman") ![Google Chrome](https://img.shields.io/badge/Google%20Chrome-4285F4?style=for-the-badge&logo=GoogleChrome&logoColor=white "Google Chrome")
 
@@ -13,137 +13,231 @@ This is a Instagram backend project for `User` to signup, signin, and update det
 
 ## Models
 
-- ### User Properties
+- ### Student Properties
   - ```java
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     ```
   - ```java
-    private String firstName;
+    private String name;
     ```
   - ```java
-    private String lastName;
-    ```
-  - ```java
-    private Integer age;
-    ```
-  - ```java
-    private String email;
-    ```
-  - ```java
-    private String password;
+    private String age;
     ```
   - ```java
     private String phoneNumber;
     ```
-- ### Post Properties
+  - ```java
+    private String branch;
+    ```
+  - ```java
+    private String department;
+    ```
+  - ```java
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+    ```
+- ### Laptop Properties
   - ```java
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private String id;
     ```
   - ```java
-    private Timestamp createdDate;
+    private String name;
     ```
   - ```java
-    private Timestamp updatedDate;
+    private String brand;
     ```
   - ```java
-    private String postData;
+    private Integer price;
     ```
   - ```java
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @OneToOne
+    private Student student;
     ```
-- ### UserAuthenticationToken Properties
+- ### Course Properties
+  - ```java
+    @Id
+    private String id;
+    ```
+  - ```java
+    private String title;
+    ```
+  - ```java
+    private String description;
+    ```
+  - ```java
+    private String duration;
+    ```
+  - ```java
+    @ManyToMany
+    List<Student> studentList;
+    ```
+- ### Book Properties
+  - ```java
+    @Id
+    private String id;
+    ```
+  - ```java
+    private String title;
+    ```
+  - ```java
+    private String author;
+    ```
+  - ```java
+    private String description;
+    ```
+  - ```java
+    private String price;
+    ```
+  - ```java
+    @ManyToOne
+    private Student student;
+    ```
+- ### Address Properties
   - ```java
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     ```
   - ```java
-    private String token;
+    private String landmark;
     ```
   - ```java
-    private LocalDate tokenCreationDate;
+    private String zipcode;
     ```
   - ```java
-    @OneToOne
-    private User user;
+    private String district;
     ```
-- ### Data To Object Classes (DTOs)
-  - `UserSignUpInput`
-  - `UserSignInInput`
-  - `UserSignUpInOutput`
-  - `UserUpdateInput`
-  - `PostInput`
-  - `PostOutput`
----
+  - ```java
+    private String state;
+    ```
+  - ```java
+    private String country;
+    ```
 ## Dataflow
 - ### End Points / Controllers
-  - _User_
-    - `@PostMapping("user/signup/")`
-    - `@PostMapping("user/signin/")`
-    - `@PutMapping("user/update/")`
-  - _Post_
-    - `@PostMapping("post/")`
-    - `@GetMapping("post/")`
+  - _Student_
+    - `@PostMapping("student")`
+    - `@GetMapping("student")`
+    - `@PutMapping("student/{id}")`
+    - `@DeleteMapping("student/{id}")`
+  - _Laptop_
+    - `@PostMapping("laptop")`
+    - `@GetMapping("laptop")`
+    - `@PutMapping("laptop/{lapId}")`
+    - `@DeleteMapping("laptop/{laptopId}")`
+  - _Course_
+    - `@PostMapping("course")`
+    - `@GetMapping("course")`
+    - `@PutMapping("course/{courseId}")`
+    - `@DeleteMapping("course/{courseId}")`
+  - _Book_
+    - `@PostMapping("book")`
+    - `@GetMapping("book")`
+    - `@PutMapping("book/{bookId}")`
+    - `@DeleteMapping("book/{bookId}")`
+  - _Address_
+    - `@PostMapping("address")`
+    - `@GetMapping("address")`
+    - `@PutMapping("address/{addressId}")`
+    - `@DeleteMapping("address/{addressId}")`
 - ### Services
-  - _User_
+  - _Student_
     ```java
-    public UserSignUpInOutput checkAndRegister(UserSignUpInput userSignUpInput)
+    public String saveStudent(Student student)
     ```
     ```java
-    private String encryptPassword(String password) throws NoSuchAlgorithmException
+    public List<Student> getAllStudents()
     ```
     ```java
-    public boolean isAuthenticate(String email)
+    public String updateStudent(String id, Student updatedStudent)
     ```
     ```java
-    public UserSignUpInOutput loginUser(UserSignInInput userSignInInput)
+    public String deleteStudentById(String id)
     ```
     ```java
-    public User getUser(Long id)
+    public Student getStudentById(String studentId)
     ```
     ```java
-    public void updateUser(Long id, UserUpdateInput updateInput)
+    public boolean isStudentExist(String id)
     ```
-  - _Post_
+  - _Laptop_
     ```java
-    public void createPost(Long id, PostInput postInput)
-    ```
-    ```java
-    public List<PostOutput> getAllPosts(Long id)
-    ```
-  - _UserAuthenticationToken_
-    ```java
-    public void saveToken(UserAuthenticationToken token)
+    public String saveLaptop(Laptop laptop)
     ```
     ```java
-    public UserAuthenticationToken getAuthTokenByUser(User user)
+    public List<Laptop> getAllLaptops()
+    ```
+    ```java
+    public String updateLaptopById(String lapId, Laptop laptop)
+    ```
+    ```java
+    public String deleteLaptopById(String laptopId)
+    ```
+  - _Course_
+    ```java
+    public String saveCourse(Course course)
+    ```
+    ```java
+    public List<Course> getAllCourses()
+    ```
+    ```java
+    public String updateCourseById(String courseId, Course course)
+    ```
+    ```java
+    public String deleteCourseById(String courseId)
+    ```
+  - _Book_
+    ```java
+    public String saveBook(Book book)
+    ```
+    ```java
+    public List<Book> getAllBooks()
+    ```
+    ```java
+    public String updateBookById(String bookId, Book book)
+    ```
+    ```java
+    public String deleteBookById(String bookId)
+    ```
+  - _Address_
+    ```java
+    public String saveAddress(Address address)
+    ```
+    ```java
+    public List<Address> getAllAddresses()
+    ```
+    ```java
+    public String updateAddressById(Long addressId, Address address)
+    ```
+    ```java
+    public String deleteAddressById(Long addressId)
     ```
 - ### Repositories
-  - _User_
+  - _Student_
     ```java
-    public interface IUserRepository extends ListCrudRepository<User, Long> {
-
-      boolean existsByEmail(String email);
-
-      User findByEmail(String email);
-
+    public interface IStudentRepository extends ListCrudRepository<Student, String> {
     }
     ```
-  - _Post_
+  - _Laptop_
     ```java
-    public interface IPostRepository extends ListCrudRepository<Post, Integer> {
-      List<Post> findByUser(User savedUser);
+    public interface ILaptopRepository extends ListCrudRepository<Laptop, String> {
     }
     ```
-  - _UserAuthenticationToken_
+  - _Course_
     ```java
-    public interface IUserAuthenticationTokenRepository extends ListCrudRepository<UserAuthenticationToken, Long> {
-      UserAuthenticationToken findByUser(User user);
+    public interface ICourseRepository extends ListCrudRepository<Course, String> {
+    }
+    ```
+  - _Book_
+    ```java
+    public interface IBookRepository extends ListCrudRepository<Book, String> {
+    }
+    ```
+  - _Address_
+    ```java
+    public interface IAddressRepository extends ListCrudRepository<Address, Long> {
     }
     ```
 - ### Database
@@ -159,4 +253,4 @@ This is a Instagram backend project for `User` to signup, signin, and update det
 
 ## Summary
 
-This API is a `Spring Boot` project that is about building a robust backend for my **Instagram** clone. Where user can signup, signin, and update their details. Also user can create posts, and view all their pots all these operations requeired authentication which improves security, and password is also saved using encryption algorithm. In this project request is sent from the client on HTTP in JSON format or from path variable with server side validations and verified with authentication stored in object then response is sent back from the server by JSON format to the client.
+This API is a `Spring Boot` project that is about managing Students, Laptops, Courses, Books, and Addresses. We can create, read, update, and delete Students, Laptops, Courses, Books, and Addresses. In this project request is sent from the client on HTTP in JSON format or from path variable and stored in object then response is sent back from the server by JSON format to the client.
