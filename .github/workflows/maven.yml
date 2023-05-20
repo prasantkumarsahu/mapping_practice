@@ -27,5 +27,6 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
+    - name: Running Jar File
+      run: sudo kill -9 `sudo lsof -t -i:8080` & sudo java -jar /home/ubuntu/_work/mapping_practice/mapping_practice/target/MappingPractice-0.0.1-SNAPSHOT.jar &
    
